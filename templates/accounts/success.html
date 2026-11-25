@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block body_class %}success-page{% endblock %}
+{% block content %}
+<main class="success-shell">
+    <section class="success-card">
+        <div class="success-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <p class="success-eyebrow">ITPS309 Activity 2</p>
+        <h1>{{ heading }}</h1>
+        <p class="success-lead">
+            {% if created %}
+                Welcome, {{ user.first_name|default:user.email }}. Your account is ready.
+            {% else %}
+                Welcome back, {{ user.first_name|default:user.email }}.
+            {% endif %}
+        </p>
+
+        <dl class="account">
+            <div>
+                <dt>Name</dt>
+                <dd>{{ user.get_full_name|default:user.email }}</dd>
+            </div>
+            <div>
+                <dt>Email</dt>
+                <dd>{{ user.email }}</dd>
+            </div>
+        </dl>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="submit" type="submit">Sign out</button>
+        </form>
+        <p class="success-note">You are signed in to your account.</p>
+    </section>
+</main>
+{% endblock %}

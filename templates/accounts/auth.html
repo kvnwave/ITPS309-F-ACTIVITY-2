@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<main class="auth-layout">
+    <section class="visual">
+        <div class="visual__inner">
+            <div class="visual__copy">
+                <p class="visual__title">Get started with us.</p>
+                <p class="visual__text">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+            </div>
+            <div class="visual__tiles" aria-hidden="true">
+                <span class="visual__tile"></span>
+                <span class="visual__tile"></span>
+                <span class="visual__tile"></span>
+                <span class="visual__tile"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" aria-labelledby="auth-heading">
+        <div class="auth-card">
+            <header class="auth-head">
+                <h1 id="auth-heading">{{ heading }}</h1>
+                <p>{{ subtitle }}</p>
+            </header>
+
+            <div class="social">
+                <button class="social-btn" type="button" disabled title="Google sign-in is disabled for this activity">
+                    <svg class="social-btn__icon" viewBox="1018.5 272 28 28" width="28" height="28" aria-hidden="true" focusable="false">
+                        <path d="M1046.23 286.322C1046.23 285.371 1046.15 284.414 1045.99 283.478H1032.78V288.869H1040.34C1040.03 290.608 1039.02 292.146 1037.54 293.123V296.621H1042.06C1044.7 294.183 1046.23 290.582 1046.23 286.322Z" fill="#5A96F5"/>
+                        <path d="M1032.78 300.001C1036.56 300.001 1039.74 298.761 1042.06 296.621L1037.55 293.123C1036.29 293.977 1034.67 294.461 1032.79 294.461C1029.13 294.461 1026.04 291.997 1024.92 288.684H1020.27V292.29C1022.65 297.017 1027.49 300.001 1032.78 300.001V300.001Z" fill="#3ABB5D"/>
+                        <path d="M1024.92 288.684C1024.33 286.945 1024.33 285.062 1024.92 283.323V279.717H1020.27C1018.28 283.673 1018.28 288.334 1020.27 292.29L1024.92 288.684V288.684Z" fill="#FBC41D"/>
+                        <path d="M1032.78 277.541C1034.78 277.51 1036.71 278.261 1038.15 279.64L1042.15 275.643C1039.62 273.266 1036.26 271.96 1032.78 272.001C1027.49 272.001 1022.65 274.985 1020.27 279.717L1024.92 283.323C1026.03 280.005 1029.13 277.541 1032.78 277.541V277.541Z" fill="#EC594C"/>
+                    </svg>
+                    <span>{{ social_prefix }} with Google</span>
+                </button>
+
+                <button class="social-btn" type="button" disabled title="Facebook sign-in is disabled for this activity">
+                    <svg class="social-btn__icon" viewBox="1018.5 340 28 28" width="28" height="28" aria-hidden="true" focusable="false">
+                        <path d="M1046.5 354C1046.5 346.268 1040.23 340 1032.5 340C1024.77 340 1018.5 346.268 1018.5 354C1018.5 360.988 1023.62 366.78 1030.31 367.83V358.047H1026.76V354H1030.31V350.916C1030.31 347.407 1032.4 345.469 1035.6 345.469C1037.13 345.469 1038.73 345.742 1038.73 345.742V349.187H1036.97C1035.23 349.187 1034.69 350.267 1034.69 351.375V354H1038.57L1037.95 358.047H1034.69V367.83C1041.38 366.78 1046.5 360.988 1046.5 354Z" fill="#1877F2"/>
+                        <path d="M1037.95 358.047L1038.57 354H1034.69V351.375C1034.69 350.268 1035.23 349.187 1036.97 349.187H1038.73V345.742C1038.73 345.742 1037.13 345.469 1035.6 345.469C1032.4 345.469 1030.31 347.407 1030.31 350.916V354H1026.76V358.047H1030.31V367.83C1031.76 368.057 1033.24 368.057 1034.69 367.83V358.047H1037.95Z" fill="#0D0D0D"/>
+                    </svg>
+                    <span>{{ social_prefix }} with Facebook</span>
+                </button>
+            </div>
+
+            <div class="divider" aria-hidden="true">
+                <span class="divider__line"></span>
+                <span>Or</span>
+                <span class="divider__line"></span>
+            </div>
+
+            <form method="post" class="auth-form" novalidate>
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="form-alert" role="alert">
+                    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                </div>
+                {% endif %}
+
+                {% if is_signup %}
+                <div class="name-row">
+                    <div class="field{% if form.first_name.errors %} has-error{% endif %}">
+                        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        {% for error in form.first_name.errors %}<p class="field__error" role="alert">{{ error }}</p>{% endfor %}
+                    </div>
+                    <div class="field{% if form.last_name.errors %} has-error{% endif %}">
+                        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                        {% for error in form.last_name.errors %}<p class="field__error" role="alert">{{ error }}</p>{% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% for field in form %}
+                    {% if field.name != "first_name" and field.name != "last_name" %}
+                    <div class="field{% if field.errors %} has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}<p class="field__error" role="alert">{{ error }}</p>{% endfor %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="submit" type="submit">{{ submit_label }}</button>
+            </form>
+
+            <p class="switch">{{ switch_text }} <a href="{{ switch_url }}">{{ switch_link }}</a></p>
+        </div>
+    </section>
+</main>
+{% endblock %}
